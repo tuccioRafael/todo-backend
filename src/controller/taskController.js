@@ -5,11 +5,11 @@ const createTask = async (req, res) => {
         const task = req.body;
         if(task.name.length <= 4){
             res.status(400).json({error: 'A descrição da tarefa deve ter no minimo 5 caracteres'})
+        }else {
+            await Task.create(task);
+            res.status(201).json();
         }
-        await Task.create(task);
-        res.status(201).json();
     } catch (err) {
-        console.error(err);
         res.status(500).json(err);
     }
 }
@@ -27,7 +27,11 @@ const getOneTaskById = async (req, res) => {
     try {
         const { id } = req.params;
         const task = await Task.findById(id);
-        res.status(200).json(task);
+        if(!task){
+            res.status(404).json({error: 'Not found'});
+        }else {
+            res.status(200).json(task);
+        }
     } catch (err) {
         res.status(500).json(err);
     }
@@ -44,10 +48,21 @@ const updateTask = async (req, res) => {
     }
 }
 
+const deleteTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Task.findByIdAndDelete(id);
+        res.status(200).json();
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
 
 module.exports = {
     createTask,
     getAllTasks,
     getOneTaskById,
     updateTask,
+    deleteTask,
 }

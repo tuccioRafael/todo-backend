@@ -39,10 +39,10 @@ test('it lists on task by id ', async () => {
 
 
 test('Deve jogar um erro caso o id não exista ', async () => {
-    const taskId = "234";
+    const taskId = "6546a9be9bc3a024709dde24";
     const request = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const response = await request.get(`/${taskId}`);
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(404);
 });
 
 test('Deve alterar uma task existente ', async () => {
@@ -56,4 +56,17 @@ test('Deve alterar uma task existente ', async () => {
     expect(newResponse.body._id).toBe(taskId);
     expect(newResponse.body.name).toBe(name);
 });
+
+test('deve deletar uma task', async () => {
+    const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
+    const res = await req.get('/');
+    const taskId = res.body[0]._id;
+    const response = await req.delete(`/${taskId}`);
+    expect(response.status).toBe(200);
+    const newResponse = await req.get(`${taskId}`);
+    expect(newResponse.status).toBe(404);
+});
+
+
+
 
