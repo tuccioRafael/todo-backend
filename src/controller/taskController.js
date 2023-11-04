@@ -13,6 +13,17 @@ const createTask = async (req, res) => {
         res.status(500).json(err);
     }
 }
+
+const getAllTasks = async (req, res) => {
+    console.log('end')
+    try {
+        const tasks = await Task.find().sort({ createdAt: -1 });
+        res.status(200).json(tasks);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
 module.exports = {
     createTask,
+    getAllTasks,
 }
