@@ -33,8 +33,7 @@ test('it lists on task by id ', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get('/');
     const taskId = res.body[0]._id;
-    const request = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
-    const response = await request.get(`/${taskId}`);
+    const response = await req.get(`/${taskId}`);
     expect(response.body._id).toBe(taskId);
 });
 
@@ -46,5 +45,15 @@ test('Deve jogar um erro caso o id não exista ', async () => {
     expect(response.status).toBe(500);
 });
 
-
+test('Deve alterar uma task existente ', async () => {
+    const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
+    const res = await req.get('/');
+    const taskId = res.body[0]._id;
+    const name = `alterado em ${Date.now()}`
+    const response = await req.put(`/${taskId}`).send({name});
+    expect(response.status).toBe(200);
+    const newResponse = await req.get(`/${taskId}`);
+    expect(newResponse.body._id).toBe(taskId);
+    expect(newResponse.body.name).toBe(name);
+});
 

@@ -27,8 +27,18 @@ const getOneTaskById = async (req, res) => {
     try {
         const { id } = req.params;
         const task = await Task.findById(id);
-        console.log(task)
         res.status(200).json(task);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
+const updateTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const task = req.body;
+        await Task.findByIdAndUpdate(id, task);
+        res.status(200).json();
     } catch (err) {
         res.status(500).json(err);
     }
@@ -39,4 +49,5 @@ module.exports = {
     createTask,
     getAllTasks,
     getOneTaskById,
+    updateTask,
 }
