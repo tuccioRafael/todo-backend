@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { response } = require('express');
 const supertest = require('supertest');
 
 test('should insert a task successfully', async () => {
@@ -15,11 +16,6 @@ test('should respond with error if name length is less than 5', async () => {
     expect(res.body.error).toBe('A descrição da tarefa deve ter no minimo 5 caracteres');
 });
 
-test('should respond with 200', async () => {
-    const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
-    const res = await req.get(`/`)
-    expect(res.status).toBe(200);
-})
 
 test('should respond with 200', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
@@ -27,9 +23,28 @@ test('should respond with 200', async () => {
     expect(res.status).toBe(200);
 })
 
-test('it lists all tasks ', async () => {
+test('should respond with 200', async () => {
+    const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
+    const res = await req.get(`/`)
+    expect(res.status).toBe(200);
+})
+
+test('it lists on task by id ', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get('/');
-    expect(res.body.length).toBeGreaterThan(0);
-    
+    const taskId = res.body[0]._id;
+    const request = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
+    const response = await request.get(`/${taskId}`);
+    expect(response.body._id).toBe(taskId);
 });
+
+
+test('Deve jogar um erro caso o id não exista ', async () => {
+    const taskId = "234";
+    const request = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
+    const response = await request.get(`/${taskId}`);
+    expect(response.status).toBe(500);
+});
+
+
+

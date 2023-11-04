@@ -13,7 +13,7 @@ app.use('/api', routes)
 const PORT = process.env.PORT;
 
 main();
-
+ 
 app.get('/', (req, res) => res.status(200).send());
 
 app.listen(8080, () => console.log('running servidor'));

@@ -15,7 +15,6 @@ const createTask = async (req, res) => {
 }
 
 const getAllTasks = async (req, res) => {
-    console.log('end')
     try {
         const tasks = await Task.find().sort({ createdAt: -1 });
         res.status(200).json(tasks);
@@ -23,7 +22,21 @@ const getAllTasks = async (req, res) => {
         res.status(500).json(err);
     }
 }
+
+const getOneTaskById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const task = await Task.findById(id);
+        console.log(task)
+        res.status(200).json(task);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
+
 module.exports = {
     createTask,
     getAllTasks,
+    getOneTaskById,
 }
