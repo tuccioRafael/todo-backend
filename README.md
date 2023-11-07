@@ -1,4 +1,4 @@
-# Todo do list
+# Todo do list api
 
 This project is a simple todo-list; 
 
@@ -6,10 +6,17 @@ This project is a simple todo-list;
 
 requirements: node >16 
 
+
+cd todo-backend
+#####  npm install
+
 ```bash
 
 
 ## API Reference
+```
+
+```
 
 #### Get all tasls
 
@@ -38,13 +45,6 @@ requirements: node >16
   PATCH /api/tasks/${id}
 ```
 
-Takes two numbers and returns the sum.
-
-
-
-  cd todo-backend
-  npm install
-```
     
 
 
