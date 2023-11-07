@@ -1,4 +1,4 @@
-# Todo do list
+# Todo do list api
 
 This project is a simple todo-list; 
 
