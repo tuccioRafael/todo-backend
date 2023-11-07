@@ -1,13 +1,13 @@
 require('dotenv').config();
 const supertest = require('supertest');
 
-test('should insert a task successfully', async () => {
+test('Deve inserir uma task com sucesso', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.post(`/`).send({ name: 'criar uma tarefa' });
     expect(res.status).toBe(201);
 });
 
-test('should respond with error if name length is less than 5', async () => {
+test('Deve lançar um erro 400 caso o nome tenha menos do que 5 caracteres', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const name = 'cri'
     const res = await req.post(`/`).send({ name });
@@ -16,14 +16,14 @@ test('should respond with error if name length is less than 5', async () => {
 });
 
 
-test('should respond with 200', async () => {
+test('Deve responder com 200 no endoint de listar', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get(`/`);
     expect(res.status).toBe(200);
 })
 
 
-test('it retrn on task by id ', async () => {
+test('Deve retornar uma task pesquisando por id ', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get('/');
     const taskId = res.body[0]._id;
@@ -39,7 +39,7 @@ test('Deve jogar um erro caso o id não exista ', async () => {
     expect(response.status).toBe(404);
 });
 
-test('Deve alterar uma task existente ', async () => {
+test('Deve alterar uma tarefa existente ', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get('/');
     const taskId = res.body[0]._id;
@@ -51,7 +51,7 @@ test('Deve alterar uma task existente ', async () => {
     expect(newResponse.body.name).toBe(name);
 });
 
-test('should update respond with error if name length is less than 5', async () => {
+test('Deve lançar um erro 400 caso o nome tenha menos de 5 caracteres', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get('/');
     const taskId = res.body[0]._id;
@@ -61,7 +61,7 @@ test('should update respond with error if name length is less than 5', async () 
     expect(response.body.error).toBe('A descrição da tarefa deve ter no minimo 5 caracteres');
 });
 
-test('deve deletar uma task', async () => {
+test('Deve deletar uma task', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`);
     const res = await req.get('/');
     const taskId = res.body[0]._id;
@@ -69,7 +69,7 @@ test('deve deletar uma task', async () => {
     expect(response.status).toBe(200);
 });
 
-test('deve completar a task', async () => {
+test('Deve concluir uma tarefa', async () => {
     const req = supertest(`http://localhost:${process.env.PORT}/api/tasks`)
     const getAllResponse = await req.get('/');
     const taskId = getAllResponse.body[0]._id;
