@@ -41,8 +41,12 @@ const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
         const task = req.body;
-        await Task.findByIdAndUpdate(id, task);
-        res.status(200).json();
+        if(task.name.length <= 4){
+            res.status(400).json({error: 'A descrição da tarefa deve ter no minimo 5 caracteres'})
+        }else {
+            await Task.findByIdAndUpdate(id, task);
+            res.status(200).json();
+        }
     } catch (err) {
         res.status(500).json(err);
     }
@@ -58,6 +62,17 @@ const deleteTask = async (req, res) => {
     }
 }
 
+const completeTask = async (req, res) => {
+    try {
+        const { done } = req.body;
+        const { id } = req.params;
+        await Task.findByIdAndUpdate(id, {done}); 
+        res.status(200).json();
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
 
 module.exports = {
     createTask,
@@ -65,4 +80,5 @@ module.exports = {
     getOneTaskById,
     updateTask,
     deleteTask,
+    completeTask,
 }
